@@ -1,6 +1,6 @@
 use serde_json::Value;
-use std::env;
 use simple_xml_builder::XMLElement;
+use std::env;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -15,12 +15,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn parse_result(data: &str) {
-  
   let v: Value = serde_json::from_str(data).expect("json error");
   let mut xitems = XMLElement::new("items");
   for d in v["data"].as_array().unwrap() {
     let mut title = String::from("");
-    for (rk,rv) in d["japanese"][0].as_object().unwrap() {
+    for (rk, rv) in d["japanese"][0].as_object().unwrap() {
       if rk == "word" {
         title.push_str(&rv.as_str().unwrap());
       }
@@ -41,5 +40,5 @@ fn parse_result(data: &str) {
     sitem.add_child(xsubtitle);
     xitems.add_child(sitem);
   }
-  println!("{}",xitems);
+  println!("{}", xitems);
 }
